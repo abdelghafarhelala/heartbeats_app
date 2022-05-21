@@ -34,8 +34,12 @@ class _HomeChartState extends State<HomeChart> {
                 child: Padding(
                   padding: const EdgeInsets.only(
                       right: 1.0, left: 10.0, top: 24, bottom: 1),
-                  child: LineChart(
-                    showAvg ? avgData() : mainData(),
+                  child: Center(
+                    child: SizedBox(
+                      child: LineChart(
+                        showAvg ? avgData() : mainData(),
+                      ),
+                    ),
                   ),
                 ),
               ),

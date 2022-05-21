@@ -33,6 +33,9 @@ class AppCubit extends Cubit<AppStates> {
 
   void changeIndex(int index) {
     currentIndex = index;
+    if (index == 1) {
+      getData(database);
+    }
     emit(AppChangeBottomNavBarState());
   }
 
@@ -43,7 +46,7 @@ class AppCubit extends Cubit<AppStates> {
       print("database created");
       database
           .execute(
-              'CREATE TABLE history(id INTEGER PRIMARY KEY,signal TEXT,time TEXT)')
+              'CREATE TABLE history(id INTEGER PRIMARY KEY,signal INTEGER,time TEXT)')
           .then((value) {
         print("table Created");
       }).catchError((error) {
@@ -85,9 +88,13 @@ class AppCubit extends Cubit<AppStates> {
   }
 
   void deleteFromDataBase({required int id}) {
-    database!.rawDelete('DELETE FROM task WHERE id = ?', [id]).then((value) {
+    database!.rawDelete('DELETE FROM history WHERE id = ?', [id]).then((value) {
       getData(database);
+      print('deleted');
       emit(AppDeleteFromDatabaseState());
     });
   }
+
+  Future<void> deleteDatabase(String path) =>
+      databaseFactory.deleteDatabase(path);
 }

@@ -298,7 +298,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Align(
               alignment: const Alignment(0.0, 0.7),
               child: Container(
-                width: 410,
+                width: 400,
                 height: 380,
                 child: chartPage,
               ),
@@ -393,20 +393,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                         });
                                       });
                                     } else {
-                                      var signalData =
-                                          chartData[chartData.length - 1]
-                                              .signal;
-                                      var timeData =
-                                          chartData[chartData.length - 1].time;
+                                      // AppCubit.get(context)
+                                      //     .deleteFromDataBase(id: 11);
                                       AppCubit.get(context).insertToDatabase(
                                           signal:
                                               chartData[chartData.length - 1]
-                                                  .signal
-                                                  .toString(),
+                                                  .signal,
                                           time: chartData[chartData.length - 1]
                                               .time);
-                                      print(signalData);
-                                      print(timeData);
+                                      // print(chartData[chartData.length - 1]
+                                      //     .signal
+                                      //     .runtimeType);
+                                      // print(signalData);
+                                      // print(timeData);
 
                                       Navigator.pushAndRemoveUntil(
                                         context,
@@ -421,7 +420,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ],
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
