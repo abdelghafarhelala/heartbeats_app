@@ -8,6 +8,7 @@ import './home/home_chart_screen.dart';
 import '../shared/cubit/cubit.dart';
 import '../shared/cubit/states.dart';
 import '../utilitys/theme.dart';
+import 'package:path/path.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key, required this.title}) : super(key: key);
@@ -29,9 +30,16 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   @override
+  // void initState() {
+  //   // TODO: implement initState
+  //   super.initState();
+  //   AppCubit.get(context).createDatabase();
+  // }
+
+  @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext context) => AppCubit(),
+      create: (BuildContext context) => AppCubit()..createDatabase(),
       child: BlocConsumer<AppCubit, AppStates>(
         listener: (BuildContext context, AppStates state) {},
         builder: (BuildContext context, AppStates state) {

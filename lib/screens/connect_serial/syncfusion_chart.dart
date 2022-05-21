@@ -6,8 +6,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:heartbeats_app/constants.dart';
+import 'package:heartbeats_app/screens/home/home_screen.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_charts/sparkcharts.dart';
+
+late List<LiveData> chartData;
 
 class SyncfusionChart extends StatefulWidget {
   final BluetoothDevice server;
@@ -24,7 +27,6 @@ class _SyncfusionChartState extends State<SyncfusionChart> {
   BluetoothConnection? connection;
   //String _messageBuffer = '';
 
-  late List<LiveData> chartData;
   late ChartSeriesController _chartSeriesController;
   bool isConnecting = true;
   bool get isConnected => (connection?.isConnected ?? false);

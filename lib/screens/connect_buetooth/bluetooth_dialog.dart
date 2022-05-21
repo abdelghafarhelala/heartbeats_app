@@ -24,7 +24,7 @@ class ChechkBluetoothDialog extends StatelessWidget {
       insetAnimationDuration: const Duration(milliseconds: 200),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       elevation: 7,
-      backgroundColor: Colors.transparent,
+      // backgroundColor: Colors.red,
       child: _buildChild(context),
     );
   }
