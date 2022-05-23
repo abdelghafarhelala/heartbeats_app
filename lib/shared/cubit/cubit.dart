@@ -97,4 +97,10 @@ class AppCubit extends Cubit<AppStates> {
 
   Future<void> deleteDatabase(String path) =>
       databaseFactory.deleteDatabase(path);
+
+  String cc(num a, String k) {
+    k = a.toString();
+    emit(AppChangeValueState());
+    return k;
+  }
 }

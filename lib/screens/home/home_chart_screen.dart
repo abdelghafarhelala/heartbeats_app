@@ -24,7 +24,7 @@ class _HomeChartState extends State<HomeChart> {
         Stack(
           children: <Widget>[
             AspectRatio(
-              aspectRatio: 1.2,
+              aspectRatio: 1.1,
               child: Container(
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.all(
@@ -46,7 +46,7 @@ class _HomeChartState extends State<HomeChart> {
             ),
             SizedBox(
               width: 60,
-              height: 34,
+              height: 64,
               child: TextButton(
                 onPressed: () {
                   setState(() {
@@ -75,7 +75,7 @@ class _HomeChartState extends State<HomeChart> {
         show: true,
         drawVerticalLine: true,
         horizontalInterval: 1,
-        verticalInterval: 1,
+        verticalInterval: 2,
         getDrawingHorizontalLine: (value) {
           return FlLine(
             color: const Color(0xff37434d),

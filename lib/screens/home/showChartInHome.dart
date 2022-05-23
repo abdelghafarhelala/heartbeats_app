@@ -13,34 +13,31 @@ import 'package:heartbeats_app/shared/cubit/states.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
-num dataNum = 0;
-late List<LiveData> chartData;
-
-class SyncfusionChart extends StatefulWidget {
-  final BluetoothDevice server;
-  const SyncfusionChart({
+class ShowChart extends StatefulWidget {
+  final BluetoothDevice? server;
+  const ShowChart({
     Key? key,
-    required this.server,
+    this.server,
   }) : super(key: key);
 
   @override
-  State<SyncfusionChart> createState() => _SyncfusionChartState();
+  State<ShowChart> createState() => _ShowChartState();
 }
 
-class _SyncfusionChartState extends State<SyncfusionChart> {
+class _ShowChartState extends State<ShowChart> {
   BluetoothConnection? connection;
   //String _messageBuffer = '';
 
   late ChartSeriesController _chartSeriesController;
   bool isConnecting = true;
   bool get isConnected => (connection?.isConnected ?? false);
-
+  late List<LiveData> chartData;
   bool isDisconnecting = false;
   @override
   void initState() {
     chartData = getChartData();
     super.initState();
-    BluetoothConnection.toAddress(widget.server.address).then((_connection) {
+    BluetoothConnection.toAddress(widget.server?.address).then((_connection) {
       print('Connected to the device');
       connection = _connection;
       setState(() {
@@ -99,10 +96,7 @@ class _SyncfusionChartState extends State<SyncfusionChart> {
                         _chartSeriesController = controller;
                       },
                       dataSource: chartData,
-                      color:
-                          int.parse(AppCubit.get(context).cc(dataNum, '')) > 80
-                              ? chartgradientStartColor
-                              : secondColor,
+                      color: chartgradientStartColor,
                       xValueMapper: (LiveData sales, _) => sales.time,
                       yValueMapper: (LiveData sales, _) => sales.signal,
                     )
@@ -153,7 +147,7 @@ class _SyncfusionChartState extends State<SyncfusionChart> {
     }
     // Create liveData if there is new line character
     String dataString = String.fromCharCodes(buffer);
-    dataNum = num.parse(dataString);
+    num dataNum = num.parse(dataString);
 
     if (kDebugMode) {
       print('==========>');

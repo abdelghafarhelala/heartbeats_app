@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heartbeats_app/shared/cubit/cubit.dart';
 import 'package:heartbeats_app/shared/cubit/states.dart';
-import 'package:path/path.dart';
+
 import '../../constants.dart';
 
 bool b1 = false;
@@ -24,9 +24,6 @@ class _HistoryRecordsState extends State<HistoryRecords> {
     return BlocConsumer<AppCubit, AppStates>(
       listener: (context, state) {},
       builder: (context, state) {
-        var cubit = AppCubit.get(context);
-
-        // var k=cubit.deleteFromDataBase(id: id)
         return Center(
           child: Container(
             alignment: Alignment.center,
@@ -104,9 +101,8 @@ Widget buildHistoryItem(
               borderRadius: BorderRadius.circular(10),
             ),
 
-            color: int.parse(history['signal']) > 80
-                ? chartCardsColor
-                : chartCardsColor2,
+            color:
+                (history['signal']) > 80 ? chartCardsColor : chartCardsColor2,
 
             // color: chartCardsColor,
 
@@ -118,9 +114,11 @@ Widget buildHistoryItem(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        const Text(
-                          'Normal ECG',
-                          style: TextStyle(
+                        Text(
+                          (history['signal']) > 80
+                              ? 'Normal ECG'
+                              : 'Abnormal ECG',
+                          style: const TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.bold,
                               fontSize: 18),
@@ -135,11 +133,12 @@ Widget buildHistoryItem(
                     children: <Widget>[
                       const SizedBox(width: 8),
                       Text(
-                        history['signal'],
+                        history['signal'].toString(),
                         style: TextStyle(
-                          color: int.parse(history['signal']) > 80
+                          color: (history['signal']) > 80
                               ? Colors.blue
                               : secondColor,
+                          // color: Colors.blue,
                           fontSize: 30.0,
                           fontWeight: FontWeight.bold,
                         ),

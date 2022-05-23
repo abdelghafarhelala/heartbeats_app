@@ -1,13 +1,12 @@
 import 'package:adobe_xd/pinned.dart';
-import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:heartbeats_app/constants.dart';
-import 'package:heartbeats_app/screens/history/history_screen.dart';
-import 'package:heartbeats_app/screens/splash/splash_screen.dart';
+import 'package:heartbeats_app/screens/home/showChartInHome.dart';
+import 'package:heartbeats_app/screens/main_screen.dart';
 import 'package:heartbeats_app/shared/cubit/cubit.dart';
 import 'package:heartbeats_app/shared/cubit/states.dart';
 import '../connect_serial/SelectBondedDevicePage.dart';
@@ -15,8 +14,6 @@ import '../connect_serial/syncfusion_chart.dart';
 import '../connect_buetooth/bluetooth_dialog.dart';
 import './home_chart_screen.dart';
 import '../../utilitys/theme.dart';
-
-bool isFinshed = false;
 
 class HomeScreen extends StatefulWidget {
   final String title;
@@ -31,8 +28,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   String titleButton = "Start Monitoring";
   Color colorButton = chartgradientStartColor;
-  Widget chartPage = HomeChart();
-  int signalStreamValue = 0;
+  Widget chartPage = ShowChart();
+  String signalStreamValue = dataNum.toString();
   DateTime date = DateTime.now();
   void _startChat(BuildContext context, BluetoothDevice server) {
     setState(() {
@@ -54,6 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return BlocConsumer<AppCubit, AppStates>(
       listener: ((context, state) {}),
       builder: (context, state) {
+        var cubit = AppCubit.get(context);
         return Stack(
           children: <Widget>[
             Pinned.fromPins(
@@ -155,130 +153,149 @@ class _HomeScreenState extends State<HomeScreen> {
             Pinned.fromPins(
               Pin(start: 30.0, end: 30.0),
               Pin(size: 120.0, middle: 0.263),
-              child: Stack(
-                children: <Widget>[
-                  SizedBox.expand(
-                      child: SvgPicture.string(
-                    svg_zq0nm,
-                    allowDrawingOutsideViewBox: true,
-                    fit: BoxFit.fill,
-                  )),
-                  Pinned.fromPins(
-                    Pin(size: 52.0, start: 36.0),
-                    Pin(size: 44.0, middle: 0.6842),
-                    child: Stack(
-                      children: <Widget>[
-                        Pinned.fromPins(
-                          Pin(size: 21.0, start: 0.0),
-                          Pin(start: 0.0, end: 0.0),
-                          child: const Text(
-                            '#',
-                            style: TextStyle(
-                              fontFamily: 'Lato',
-                              fontSize: 36,
-                              color: Color(0xff3098fe),
-                              fontWeight: FontWeight.w900,
-                              height: 0.6111111111111112,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: int.parse(AppCubit.get(context)
+                              .cc(dataNum, signalStreamValue)) >
+                          80
+                      ? chartCardsColor
+                      : chartCardsColor2,
+                ),
+                child: Stack(
+                  children: [
+                    // SizedBox.expand(
+                    //     child: SvgPicture.string(
+                    //   svg_zq0nm,
+                    //   allowDrawingOutsideViewBox: true,
+                    //   fit: BoxFit.fill,
+                    // )),
+                    Pinned.fromPins(
+                      Pin(size: 52.0, start: 36.0),
+                      Pin(size: 44.0, middle: 0.6842),
+                      child: Stack(
+                        children: <Widget>[
+                          Pinned.fromPins(
+                            Pin(size: 21.0, start: 0.0),
+                            Pin(start: 0.0, end: 0.0),
+                            child: Text(
+                              '#',
+                              style: TextStyle(
+                                fontFamily: 'Lato',
+                                fontSize: 36,
+                                color: int.parse(AppCubit.get(context)
+                                            .cc(dataNum, signalStreamValue)) >
+                                        80
+                                    ? chartCardsColor
+                                    : chartCardsColor2,
+                                fontWeight: FontWeight.w900,
+                                height: 0.6111111111111112,
+                              ),
+                              textHeightBehavior: const TextHeightBehavior(
+                                  applyHeightToFirstAscent: false),
+                              softWrap: false,
                             ),
-                            textHeightBehavior: TextHeightBehavior(
-                                applyHeightToFirstAscent: false),
-                            softWrap: false,
                           ),
-                        ),
-                        Pinned.fromPins(
-                          Pin(size: 26.0, end: 0.0),
-                          Pin(size: 16.0, end: 6.0),
-                          child: Text(
-                            signalStreamValue.toString(),
-                            style: TextStyle(
-                              fontFamily: 'Lato',
-                              fontSize: 13,
-                              color: Color(0xff484848),
-                              fontWeight: FontWeight.w700,
-                              height: 1.6923076923076923,
+                          Pinned.fromPins(
+                            Pin(size: 26.0, end: 0.0),
+                            Pin(size: 16.0, end: 6.0),
+                            child: Text(
+                              AppCubit.get(context)
+                                  .cc(dataNum, signalStreamValue),
+                              style: const TextStyle(
+                                fontFamily: 'Lato',
+                                fontSize: 13,
+                                color: Color(0xff484848),
+                                fontWeight: FontWeight.w700,
+                                height: 1.6923076923076923,
+                              ),
+                              textHeightBehavior: const TextHeightBehavior(
+                                  applyHeightToFirstAscent: false),
+                              softWrap: false,
                             ),
-                            textHeightBehavior: TextHeightBehavior(
-                                applyHeightToFirstAscent: false),
-                            softWrap: false,
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Pinned.fromPins(
-                    Pin(size: 68.0, start: 36.0),
-                    Pin(size: 18.0, middle: 0.2353),
-                    child: const Text(
-                      'Heart rate',
-                      style: TextStyle(
-                        fontFamily: 'Lato',
-                        fontSize: 15,
-                        color: Color(0xff5c5d5e),
-                        fontWeight: FontWeight.w700,
-                        height: 1.4666666666666666,
+                        ],
                       ),
-                      textHeightBehavior:
-                          TextHeightBehavior(applyHeightToFirstAscent: false),
-                      softWrap: false,
                     ),
-                  ),
-                  const Align(
-                    alignment: Alignment(0.253, 0.538),
-                    child: SizedBox(
-                      width: 42.0,
-                      height: 16.0,
-                      child: Text(
-                        'Status :',
+                    Pinned.fromPins(
+                      Pin(size: 68.0, start: 36.0),
+                      Pin(size: 18.0, middle: 0.2353),
+                      child: const Text(
+                        'Heart rate',
                         style: TextStyle(
                           fontFamily: 'Lato',
-                          fontSize: 13,
-                          color: Color(0xff1b2428),
-                          height: 1.6923076923076923,
+                          fontSize: 15,
+                          color: Color(0xff5c5d5e),
+                          fontWeight: FontWeight.w700,
+                          height: 1.4666666666666666,
                         ),
                         textHeightBehavior:
                             TextHeightBehavior(applyHeightToFirstAscent: false),
                         softWrap: false,
                       ),
                     ),
-                  ),
-                  Pinned.fromPins(
-                    Pin(size: 56.0, end: 42.0),
-                    Pin(size: 16.0, middle: 0.7692),
-                    child: const Text(
-                      'Normal',
-                      style: TextStyle(
-                        fontFamily: 'Lato',
-                        fontSize: 13,
-                        color: Color(0xff1b2428),
-                        fontWeight: FontWeight.w700,
-                        height: 1.6923076923076923,
+                    const Align(
+                      alignment: Alignment(0.253, 0.538),
+                      child: SizedBox(
+                        width: 42.0,
+                        height: 16.0,
+                        child: Text(
+                          'Status :',
+                          style: TextStyle(
+                            fontFamily: 'Lato',
+                            fontSize: 13,
+                            color: Color(0xff1b2428),
+                            height: 1.6923076923076923,
+                          ),
+                          textHeightBehavior: TextHeightBehavior(
+                              applyHeightToFirstAscent: false),
+                          softWrap: false,
+                        ),
                       ),
-                      textHeightBehavior:
-                          TextHeightBehavior(applyHeightToFirstAscent: false),
-                      softWrap: false,
                     ),
-                  ),
-                  Pinned.fromPins(
-                    Pin(size: 113.4, start: 165.6),
-                    Pin(size: 40.0, middle: 0.3),
-                    child: Stack(
-                      children: <Widget>[
-                        SizedBox.expand(
-                            child: SvgPicture.string(
-                          svg_t4j01,
-                          allowDrawingOutsideViewBox: true,
-                          fit: BoxFit.fill,
-                        )),
-                      ],
+                    Pinned.fromPins(
+                      Pin(size: 56.0, end: 42.0),
+                      Pin(size: 16.0, middle: 0.7692),
+                      child: Text(
+                        int.parse(AppCubit.get(context)
+                                    .cc(dataNum, signalStreamValue)) >
+                                80
+                            ? 'Normal'
+                            : 'Abnormal',
+                        style: const TextStyle(
+                          fontFamily: 'Lato',
+                          fontSize: 13,
+                          color: Color(0xff1b2428),
+                          fontWeight: FontWeight.w700,
+                          height: 1.6923076923076923,
+                        ),
+                        textHeightBehavior: const TextHeightBehavior(
+                            applyHeightToFirstAscent: false),
+                        softWrap: false,
+                      ),
                     ),
-                  ),
-                ],
+                    Pinned.fromPins(
+                      Pin(size: 113.4, start: 165.6),
+                      Pin(size: 40.0, middle: 0.3),
+                      child: Stack(
+                        children: <Widget>[
+                          SizedBox.expand(
+                              child: SvgPicture.string(
+                            svg_t4j01,
+                            allowDrawingOutsideViewBox: true,
+                            fit: BoxFit.fill,
+                          )),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
             const Align(
-              alignment: Alignment(0.0, -0.118),
+              alignment: Alignment(0.0, -0.170),
               child: SizedBox(
-                width: 99.0,
+                width: 110.0,
                 height: 18.0,
                 child: Text(
                   'Real-Time ECG',
@@ -396,9 +413,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       // AppCubit.get(context)
                                       //     .deleteFromDataBase(id: 11);
                                       AppCubit.get(context).insertToDatabase(
-                                          signal:
-                                              chartData[chartData.length - 1]
-                                                  .signal,
+                                          signal: int.parse(signalStreamValue),
                                           time: chartData[chartData.length - 1]
                                               .time);
                                       // print(chartData[chartData.length - 1]
@@ -409,9 +424,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                       Navigator.pushAndRemoveUntil(
                                         context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                SplashScreen()),
+                                        MaterialPageRoute(builder: (context) {
+                                          cubit.currentIndex = 0;
+                                          return MainScreen(title: 'Home');
+                                        }),
                                         (Route<dynamic> route) => false,
                                       );
                                     }
