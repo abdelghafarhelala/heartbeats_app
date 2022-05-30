@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heartbeats_app/screens/filter_results.dart';
+import 'package:heartbeats_app/screens/python_fliter/filter_signals_data_screen.dart';
 import 'package:sqflite/sqflite.dart';
 import '../../screens/history/history_screen.dart';
 import '../../screens/home/home_screen.dart';
@@ -19,7 +20,8 @@ class AppCubit extends Cubit<AppStates> {
 
   List<Widget> screens = [
     HomeScreen(title: 'title'),
-    const HistoryRecords(title: 'History'),
+    //const HistoryRecords(title: 'History'),
+    FilterSignalsData(),
     const Profile(
       title: 'Setting',
     ), //title: 'Profile'
