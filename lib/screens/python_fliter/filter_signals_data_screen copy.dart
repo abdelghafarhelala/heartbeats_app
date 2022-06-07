@@ -8,19 +8,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 import 'package:csv/csv.dart';
-import 'package:heartbeats_app/screens/connect_serial/syncfusion_chart.dart';
 
 List? ff;
 List? time = [];
 
-class FilterSignalsData extends StatefulWidget {
-  FilterSignalsData({Key? key}) : super(key: key);
+class FilterSignalsData2 extends StatefulWidget {
+  const FilterSignalsData2({Key? key}) : super(key: key);
 
   @override
-  State<FilterSignalsData> createState() => FilterSignalsDataState();
+  State<FilterSignalsData2> createState() => _FilterSignalsData2State();
 }
 
-class FilterSignalsDataState extends State<FilterSignalsData> {
+class _FilterSignalsData2State extends State<FilterSignalsData2> {
   List<List<dynamic>> _data = [];
   // This function is triggered when the floating button is pressed
   void _loadCSV() async {
@@ -44,13 +43,13 @@ class FilterSignalsDataState extends State<FilterSignalsData> {
       if (n < 13) {
         //continue;
       } else {
-        num value1 = 2 * y[n - 1]; //2 *
-        num value2 = y[n - 2];
-        num value3 = x[n];
-        num value4 = 2 * x[n - 6]; // 2 *
-        num value5 = x[n - 12];
+        num value1 = 2 * y[n - 1][1]; //2 *
+        num value2 = y[n - 2][1];
+        num value3 = x[n][1];
+        num value4 = 2 * x[n - 6][1]; // 2 *
+        num value5 = x[n - 12][1];
         if (a < 40) {
-          y[n] = value1 - value2 + value3 - value4 + value5;
+          y[n][1] = value1 - value2 + value3 - value4 + value5;
           // print('---------y[n]-----');
           // print(y[n].toString());
         }
@@ -70,13 +69,13 @@ class FilterSignalsDataState extends State<FilterSignalsData> {
         //continue;
       } else {
         //y.iloc[n,1] = y.iloc[n-1,1] - x.iloc[n,1]/32 + x.iloc[n-16,1] - x.iloc[n-17,1] + x.iloc[n-32,1]/32
-        num value1 = y[n - 1];
-        num value2 = x[n] / 32;
-        num value3 = x[n - 16];
-        num value4 = x[n - 17];
-        num value5 = x[n - 32];
+        num value1 = y[n - 1][1];
+        num value2 = x[n][1] / 32;
+        num value3 = x[n - 16][1];
+        num value4 = x[n - 17][1];
+        num value5 = x[n - 32][1];
         if (a < 60) {
-          y[n] = value1 - value2 + value3 - value4 + value5 / 32;
+          y[n][1] = value1 - value2 + value3 - value4 + value5 / 32;
           // print('---------y[n]-----');
           // print(y[n].toString());
         }
@@ -96,12 +95,12 @@ class FilterSignalsDataState extends State<FilterSignalsData> {
         //continue;
       } else {
         //y.iloc[n, 1] = (2*x.iloc[n,1] + x.iloc[n-1,1] - x.iloc[n-3,1] - 2*x.iloc[n-4,1])/4
-        num value1 = 2 * x[n];
-        num value2 = x[n - 1];
-        num value3 = x[n - 3];
-        num value4 = 2 * x[n - 4];
+        num value1 = 2 * x[n][1];
+        num value2 = x[n - 1][1];
+        num value3 = x[n - 3][1];
+        num value4 = 2 * x[n - 4][1];
         if (a < 60) {
-          y[n] = (value1 + value2 - value3 - value4) / 4;
+          y[n][1] = (value1 + value2 - value3 - value4) / 4;
           // print('---------y[n]----- from deriv');
           // print(y[n].toString());
         }
@@ -116,8 +115,8 @@ class FilterSignalsDataState extends State<FilterSignalsData> {
     List<dynamic> y = x;
     x.asMap().forEach((n, value) {
       //y.iloc[n,1] = x.iloc[n,1]**2
-      var value1 = x[n];
-      y[n] = value1 * 2 * 2;
+      var value1 = x[n][1];
+      y[n][1] = value1 * 2 * 2;
       // print('---------y[n]-----');
       // print(y[n].toString());
     });
@@ -138,16 +137,16 @@ class FilterSignalsDataState extends State<FilterSignalsData> {
         // for (dynamic j in Range(n - l, n + l + 1)) {}
         int j = 0;
         while (j >= (n - 1) && j <= (n + l + 1)) {
-          tmp_sum += x[j];
+          tmp_sum += x[j][1];
           j++;
         }
         // y.iloc[n,1] = tmp_sum/(l+1)
-        y[n] = tmp_sum / (l + 1);
+        y[n][1] = tmp_sum / (l + 1);
       }
 
       //y.iloc[n,1] = x.iloc[n,1]**2
-      var value1 = x[n];
-      y[n] = value1 * 2 * 2;
+      var value1 = x[n][1];
+      y[n][1] = value1 * 2 * 2;
       // print('---------y[n]-----');
       // print(y[n].toString());
     });
@@ -162,7 +161,8 @@ class FilterSignalsDataState extends State<FilterSignalsData> {
 
   List findPeaks(List a, {double? threshold}) {
     for (int i = 0; i < a.length; i++) {
-      appe.add(a[i]);
+      appe.add(a[i][1]);
+      time!.add(a[i][0]);
     }
     var N = appe.length - 2;
     var ix = [];
@@ -204,7 +204,7 @@ class FilterSignalsDataState extends State<FilterSignalsData> {
       RR_interval = (peaklists[index + 1] - peaklists[index]);
       if (RR_interval > 0) {
         ms_dist = ((RR_interval / fs) * 1000.0);
-        RR_list.add(ms_dist / 1000);
+        RR_list.add(ms_dist);
       }
 
       index += 1;
@@ -212,20 +212,19 @@ class FilterSignalsDataState extends State<FilterSignalsData> {
     return RR_list;
   }
 
-  void run(List bag) {
-    var f1 = lpf(bag);
+  void run() {
+    var f1 = lpf(_data);
     var f2 = hpf(f1);
     var f3 = deriv(f2);
     var f4 = squaring(f3);
     var window_size = 22;
     var f5 = win_sum(f4, window_size);
     var f6 = findPeaks(f5);
-    // print('----------------first-----------------');
-    // print(f6);
-    // print('----------------first-----------------');
+    print('----------------first-----------------');
+    print(f6);
+    print('----------------first-----------------');
     ff = last(f6);
     // print('---------y[n]-----');
-    
     print(ff.toString());
     // var f5 = win_sum(f4, window_size);
     // var heart = ff[0][1];
@@ -253,7 +252,7 @@ class FilterSignalsDataState extends State<FilterSignalsData> {
               _loadCSV();
               print('-----------lpf-------');
               // win_sum(squaring(deriv(hpf(lpf(_data)))), 22);
-              run(bag);
+              run();
               print('-------lpf end----------');
               if (kDebugMode) {
                 print('rrrrrrrrr');

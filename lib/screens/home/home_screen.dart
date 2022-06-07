@@ -7,6 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:heartbeats_app/constants.dart';
 import 'package:heartbeats_app/screens/home/showChartInHome.dart';
 import 'package:heartbeats_app/screens/main_screen.dart';
+import 'package:heartbeats_app/screens/questions_screen/questionScreen.dart';
 import 'package:heartbeats_app/shared/cubit/cubit.dart';
 import 'package:heartbeats_app/shared/cubit/states.dart';
 import '../connect_serial/SelectBondedDevicePage.dart';
@@ -55,15 +56,15 @@ class _HomeScreenState extends State<HomeScreen> {
         return Stack(
           children: <Widget>[
             Pinned.fromPins(
-              Pin(size: 126.0, start: 30.0),
+              Pin(size: 90.0, start: 30.0),
               Pin(size: 21.0, start: 92.0),
               child: Stack(
                 children: <Widget>[
                   Pinned.fromPins(
-                    Pin(size: 17.0, start: 0.0),
+                    Pin(size: 80.0, start: 0.0),
                     Pin(start: 0.0, end: 0.0),
                     child: const Text(
-                      'Hi',
+                      'welcome',
                       style: TextStyle(
                         fontFamily: 'Lato',
                         fontSize: 17,
@@ -75,26 +76,26 @@ class _HomeScreenState extends State<HomeScreen> {
                       softWrap: false,
                     ),
                   ),
-                  Pinned.fromPins(
-                    Pin(size: 80.0, middle: 0.4783),
-                    Pin(start: 0.0, end: 0.0),
-                    child: const Text(
-                      'UserName',
-                      style: TextStyle(
-                        fontFamily: 'Lato',
-                        fontSize: 17,
-                        color: Color(0xff1b2428),
-                        fontWeight: FontWeight.w700,
-                        height: 1.2941176470588236,
-                      ),
-                      textHeightBehavior:
-                          TextHeightBehavior(applyHeightToFirstAscent: false),
-                      softWrap: false,
-                    ),
-                  ),
+                  // Pinned.fromPins(
+                  //   Pin(size: 80.0, middle: 0.4783),
+                  //   Pin(start: 0.0, end: 0.0),
+                  //   child: const Text(
+                  //     'UserName',
+                  //     style: TextStyle(
+                  //       fontFamily: 'Lato',
+                  //       fontSize: 17,
+                  //       color: Color(0xff1b2428),
+                  //       fontWeight: FontWeight.w700,
+                  //       height: 1.2941176470588236,
+                  //     ),
+                  //     textHeightBehavior:
+                  //         TextHeightBehavior(applyHeightToFirstAscent: false),
+                  //     softWrap: false,
+                  //   ),
+                  // ),
                   Pinned.fromPins(
                     Pin(size: 18.0, end: 0.0),
-                    Pin(start: 2.0, end: 1.0),
+                    Pin(start: 0.0, end: 0.0),
                     child: Stack(
                       children: <Widget>[
                         Container(
@@ -119,19 +120,29 @@ class _HomeScreenState extends State<HomeScreen> {
             Pinned.fromPins(
               Pin(size: 24.7, end: 30.0),
               Pin(size: 24.7, start: 92.0),
-              child: Stack(
-                children: <Widget>[
-                  Stack(
-                    children: <Widget>[
-                      SizedBox.expand(
-                          child: SvgPicture.string(
-                        svg_gccwwt,
-                        allowDrawingOutsideViewBox: true,
-                        fit: BoxFit.fill,
-                      )),
-                    ],
-                  ),
-                ],
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            const QuestionsScreen(title: 'Question'),
+                      ));
+                },
+                child: Stack(
+                  children: <Widget>[
+                    Stack(
+                      children: <Widget>[
+                        SizedBox.expand(
+                            child: SvgPicture.string(
+                          svg_gccwwt,
+                          allowDrawingOutsideViewBox: true,
+                          fit: BoxFit.fill,
+                        )),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
             Pinned.fromPins(
@@ -415,7 +426,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       AppCubit.get(context).insertToDatabase(
                                           signal: int.parse(signalStreamValue),
                                           time: chartData[chartData.length - 1]
-                                              .time);
+                                              .time
+                                              .toString());
                                       // print(chartData[chartData.length - 1]
                                       //     .signal
                                       //     .runtimeType);

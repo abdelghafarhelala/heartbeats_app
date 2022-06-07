@@ -21,7 +21,9 @@ class AppCubit extends Cubit<AppStates> {
   List<Widget> screens = [
     HomeScreen(title: 'title'),
     //const HistoryRecords(title: 'History'),
-    FilterSignalsData(),
+    const HistoryRecords(
+      title: 'History',
+    ),
     const Profile(
       title: 'Setting',
     ), //title: 'Profile'

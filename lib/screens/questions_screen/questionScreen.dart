@@ -51,7 +51,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                   const Align(
                     alignment: Alignment.center,
                     child: Text(
-                      'Setting',
+                      'FAQs',
                       style: TextStyle(
                         fontSize: 25.0,
                         color: Colors.black,
@@ -67,6 +67,8 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
               buildQuestionItem(
                   isExpanded: isExpanded1,
                   question: 'Why EGC doesn\'t appear ?',
+                  answer:
+                      'Make sure that your phone\'s Bluetooth is connected to the Bluetooth of measuring device (HC-05) so that the app starts measuring and showing the ECG',
                   onTap: () {
                     setState(() {
                       isExpanded1 = !isExpanded1;
@@ -78,6 +80,8 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
               buildQuestionItem(
                   isExpanded: isExpanded2,
                   question: 'What is the min & max heart rate ?',
+                  answer:
+                      'A person\'s target heart rate zone is between 50% and 85% of their max heart rate, most commonly, max heart rate is calculated by subtracting your age from 220',
                   onTap: () {
                     setState(() {
                       isExpanded2 = !isExpanded2;
@@ -89,6 +93,8 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
               buildQuestionItem(
                   isExpanded: isExpanded3,
                   question: 'How can i share results with my doctor ?',
+                  answer:
+                      'From the history page, choose any previously saved reading, then you will find a button below to share the saved report via any social media',
                   onTap: () {
                     setState(() {
                       isExpanded3 = !isExpanded3;
@@ -100,6 +106,8 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
               buildQuestionItem(
                   isExpanded: isExpanded4,
                   question: 'How can i get the EGC sensor of app ?',
+                  answer:
+                      'You can contact us via our website to request a measuring device for the application',
                   onTap: () {
                     setState(() {
                       isExpanded4 = !isExpanded4;
@@ -111,6 +119,8 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
               buildQuestionItem(
                   isExpanded: isExpanded5,
                   question: 'What is emergency number required ?',
+                  answer:
+                      'From monitoring your ECG in case of a health crisis, a recorded message will be sent to these numbers as an attempt to save your life',
                   onTap: () {
                     setState(() {
                       isExpanded5 = !isExpanded5;
@@ -124,10 +134,12 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
   }
 }
 
-Widget buildQuestionItem(
-        {required String question,
-        required Function onTap,
-        required bool isExpanded}) =>
+Widget buildQuestionItem({
+  required String question,
+  required Function onTap,
+  required bool isExpanded,
+  required String answer,
+}) =>
     Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       child: Container(
@@ -165,9 +177,9 @@ Widget buildQuestionItem(
               ],
             ),
             if (isExpanded)
-              const Text(
-                'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book',
-                style: TextStyle(
+              Text(
+                answer,
+                style: const TextStyle(
                   fontSize: 15,
                   color: Colors.black87,
                 ),

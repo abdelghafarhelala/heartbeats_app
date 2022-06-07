@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:heartbeats_app/screens/emergency_screen/emergencyScreen.dart';
+import 'package:heartbeats_app/screens/python_fliter/filter_signals_data_screen.dart';
 import 'package:heartbeats_app/screens/questions_screen/questionScreen.dart';
 import 'package:humanitarian_icons/humanitarian_icons.dart';
 
@@ -55,6 +56,14 @@ class _ProfileState extends State<Profile> {
             ),
             buildSettingItem(
                 prefixIcon: Icons.language, title: 'Website', context: context),
+            const SizedBox(
+              height: 20,
+            ),
+            buildSettingItem(
+                prefixIcon: Icons.question_mark_outlined,
+                title: 'Test csv',
+                context: context,
+                widget: FilterSignalsData()),
             const SizedBox(
               height: 50,
             ),

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:heartbeats_app/constants.dart';
+import 'package:heartbeats_app/screens/connect_serial/syncfusion_chart.dart';
 import 'package:heartbeats_app/screens/home/home_screen.dart';
 import 'package:heartbeats_app/shared/cubit/cubit.dart';
 import 'package:heartbeats_app/shared/cubit/states.dart';
@@ -122,54 +123,64 @@ class _ShowChartState extends State<ShowChart> {
   }
 
   double time = 0;
-  void updateDataSource(Uint8List data) {
+  void updateDataSource(data) {
     // Allocate buffer for parsed data
-    int backspacesCounter = 0;
-    data.forEach((byte) {
-      if (byte == 8 || byte == 127) {
-        backspacesCounter++;
+    // int backspacesCounter = 0;
+    // data.forEach((byte) {
+    //   if (byte == 8 || byte == 127) {
+    //     backspacesCounter++;
+    //   }
+    // });
+    // Uint8List buffer = Uint8List(data.length - backspacesCounter);
+    // int bufferIndex = buffer.length;
+    // // Apply backspace control character
+    // backspacesCounter = 0;
+    // for (int i = data.length - 1; i >= 0; i--) {
+    //   if (data[i] == 8 || data[i] == 127) {
+    //     backspacesCounter++;
+    //   } else {
+    //     if (backspacesCounter > 0) {
+    //       backspacesCounter--;
+    //     } else {
+    //       buffer[--bufferIndex] = data[i];
+    //     }
+    //   }
+    // }
+    // // Create liveData if there is new line character
+    // String dataString = String.fromCharCodes(buffer);
+    // num dataNum = num.parse(dataString);
+
+    // if (kDebugMode) {
+    //   print('==========>');
+    //   print(buffer);
+    //   print('........>');
+    //   print(dataNum);
+    //   print('==========<');
+    // }
+
+    // int index = buffer.indexOf(13);
+    // if (~index != 0) {
+    //   time = time + 0.005;
+    // chartData.add(LiveData(time, dataNum));
+    for (int i = 1; i < data!.length; i++) {
+      chartData.add(LiveData(data[i][0], double.parse(data[i][1])));
+    }
+    setState(() {
+      // chartData.add(
+      //   LiveData(time, dataNum),
+      // );
+      // chartData.removeAt(0);
+      // _chartSeriesController.updateDataSource(
+      //     addedDataIndex: chartData.length - 1, removedDataIndex: 0);
+      for (int i = 1; i < data.length; i++) {
+        chartData.add(LiveData(data[i][0], double.parse(data[i][1])));
+        dataNum = data[i][1];
       }
+      chartData.removeAt(0);
+      _chartSeriesController.updateDataSource(
+          addedDataIndex: chartData.length - 1, removedDataIndex: 0);
     });
-    Uint8List buffer = Uint8List(data.length - backspacesCounter);
-    int bufferIndex = buffer.length;
-    // Apply backspace control character
-    backspacesCounter = 0;
-    for (int i = data.length - 1; i >= 0; i--) {
-      if (data[i] == 8 || data[i] == 127) {
-        backspacesCounter++;
-      } else {
-        if (backspacesCounter > 0) {
-          backspacesCounter--;
-        } else {
-          buffer[--bufferIndex] = data[i];
-        }
-      }
-    }
-    // Create liveData if there is new line character
-    String dataString = String.fromCharCodes(buffer);
-    num dataNum = num.parse(dataString);
-
-    if (kDebugMode) {
-      print('==========>');
-      print(buffer);
-      print('........>');
-      print(dataNum);
-      print('==========<');
-    }
-
-    int index = buffer.indexOf(13);
-    if (~index != 0) {
-      time = time + 0.005;
-      chartData.add(LiveData(time, dataNum));
-      setState(() {
-        chartData.add(
-          LiveData(time, dataNum),
-        );
-        chartData.removeAt(0);
-        _chartSeriesController.updateDataSource(
-            addedDataIndex: chartData.length - 1, removedDataIndex: 0);
-      });
-    } else {}
+    // } else {}
   }
 
   List<LiveData> getChartData() {

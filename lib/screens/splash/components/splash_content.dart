@@ -9,8 +9,9 @@ class SplashContent extends StatelessWidget {
     Key? key,
     required this.text,
     required this.image,
+    required this.content,
   }) : super(key: key);
-  final String text, image;
+  final String text, image, content;
   @override
   Widget build(BuildContext context) {
     return Builder(builder: (context) {
@@ -37,8 +38,7 @@ class SplashContent extends StatelessWidget {
           ),
           Container(
             margin: EdgeInsets.symmetric(horizontal: 10),
-            child: Text(
-                "Lorem ipsum dolor sit amet consectetur adipiscing elit urna velit amet tempor egestas fringilla bibendum vel nisl sed dolormsne iste drakon.",
+            child: Text(content,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: getProportionateScreenWidth(15),
