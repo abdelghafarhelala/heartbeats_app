@@ -4,6 +4,7 @@ import 'package:heartbeats_app/constants.dart';
 import 'package:heartbeats_app/screens/connect_serial/ChatPage.dart';
 import 'package:heartbeats_app/screens/connect_serial/SelectBondedDevicePage.dart';
 import 'package:heartbeats_app/screens/connect_serial/syncfusion_chart.dart';
+import 'package:heartbeats_app/screens/splash/components/body.dart';
 import 'package:heartbeats_app/screens/splash/splash_screen.dart';
 
 class ChechkBluetoothDialog extends StatelessWidget {
@@ -143,18 +144,24 @@ class ChechkBluetoothDialog extends StatelessWidget {
                     ),
                     TextButton(
                       onPressed: () {
-                        Navigator.of(context).pop();
+                        isLast = false;
+                        Navigator.push(context, MaterialPageRoute(
+                          builder: (context) {
+                            return const SplashScreen();
+                          },
+                        ));
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           IconButton(
                             onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const SplashScreen(),
-                                  ));
+                              isLast = false;
+                              Navigator.push(context, MaterialPageRoute(
+                                builder: (context) {
+                                  return const SplashScreen();
+                                },
+                              ));
                             },
                             icon: const Icon(
                               Icons.arrow_back,

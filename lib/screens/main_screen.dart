@@ -38,43 +38,43 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (BuildContext context) => AppCubit()..createDatabase(),
-      child: BlocConsumer<AppCubit, AppStates>(
-        listener: (BuildContext context, AppStates state) {},
-        builder: (BuildContext context, AppStates state) {
-          AppCubit cubit = AppCubit.get(context);
-          return Scaffold(
-            bottomNavigationBar: BottomNavigationBar(
-              currentIndex: cubit.currentIndex,
-              onTap: (index) {
-                setState(() {
-                  cubit.changeIndex(index);
-                });
-                print(cubit.currentIndex);
-              },
-              type: BottomNavigationBarType.fixed,
-              backgroundColor: Colors.grey[300]!,
-              items: [
-                BottomNavigationBarItem(
-                  icon: const Icon(Icons.home),
-                  label: cubit.titles[0],
+    return BlocConsumer<AppCubit, AppStates>(
+      listener: (BuildContext context, AppStates state) {},
+      builder: (BuildContext context, AppStates state) {
+        AppCubit cubit = AppCubit.get(context);
+        return Scaffold(
+          bottomNavigationBar: BottomNavigationBar(
+            currentIndex: cubit.currentIndex,
+            onTap: (index) {
+              setState(() {
+                cubit.changeIndex(index);
+              });
+              print(cubit.currentIndex);
+            },
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: Colors.grey[100]!,
+            items: [
+              BottomNavigationBarItem(
+                icon: ImageIcon(
+                  AssetImage('assets/images/home.png'),
+                  size: 35,
                 ),
-                BottomNavigationBarItem(
-                  icon: const Icon(Icons.post_add_outlined),
-                  label: cubit.titles[1],
-                ),
-                BottomNavigationBarItem(
-                  icon: const Icon(Icons.settings),
-                  label: cubit.titles[2],
-                ),
-              ],
-            ),
-            backgroundColor: const Color(0xffffffff),
-            body: cubit.screens[cubit.currentIndex],
-          );
-        },
-      ),
+                label: cubit.titles[0],
+              ),
+              BottomNavigationBarItem(
+                icon: ImageIcon(AssetImage('assets/images/stats.png')),
+                label: cubit.titles[1],
+              ),
+              BottomNavigationBarItem(
+                icon: ImageIcon(AssetImage('assets/images/settings.png')),
+                label: cubit.titles[2],
+              ),
+            ],
+          ),
+          backgroundColor: const Color(0xffffffff),
+          body: cubit.screens[cubit.currentIndex],
+        );
+      },
     );
   }
 }

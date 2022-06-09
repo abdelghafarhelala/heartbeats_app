@@ -51,7 +51,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                   const Align(
                     alignment: Alignment.center,
                     child: Text(
-                      'FAQs',
+                      'How to use',
                       style: TextStyle(
                         fontSize: 25.0,
                         color: Colors.black,

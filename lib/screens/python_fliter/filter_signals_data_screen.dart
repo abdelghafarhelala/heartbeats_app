@@ -44,11 +44,12 @@ class FilterSignalsDataState extends State<FilterSignalsData> {
       if (n < 13) {
         //continue;
       } else {
-        num value1 = 2 * y[n - 1]; //2 *
-        num value2 = y[n - 2];
-        num value3 = x[n];
-        num value4 = 2 * x[n - 6]; // 2 *
-        num value5 = x[n - 12];
+        num value1, value2, value3, value4, value5 = 0;
+        value1 = 2 * y[n - 1]; //2 *
+        value2 = y[n - 2];
+        value3 = x[n];
+        value4 = 2 * x[n - 6]; // 2 *
+        value5 = x[n - 12];
         if (a < 40) {
           y[n] = value1 - value2 + value3 - value4 + value5;
           // print('---------y[n]-----');
@@ -70,11 +71,12 @@ class FilterSignalsDataState extends State<FilterSignalsData> {
         //continue;
       } else {
         //y.iloc[n,1] = y.iloc[n-1,1] - x.iloc[n,1]/32 + x.iloc[n-16,1] - x.iloc[n-17,1] + x.iloc[n-32,1]/32
-        num value1 = y[n - 1];
-        num value2 = x[n] / 32;
-        num value3 = x[n - 16];
-        num value4 = x[n - 17];
-        num value5 = x[n - 32];
+        num value1, value2, value3, value4, value5 = 0;
+        value1 = y[n - 1];
+        value2 = x[n] / 32;
+        value3 = x[n - 16];
+        value4 = x[n - 17];
+        value5 = x[n - 32];
         if (a < 60) {
           y[n] = value1 - value2 + value3 - value4 + value5 / 32;
           // print('---------y[n]-----');
@@ -96,10 +98,11 @@ class FilterSignalsDataState extends State<FilterSignalsData> {
         //continue;
       } else {
         //y.iloc[n, 1] = (2*x.iloc[n,1] + x.iloc[n-1,1] - x.iloc[n-3,1] - 2*x.iloc[n-4,1])/4
-        num value1 = 2 * x[n];
-        num value2 = x[n - 1];
-        num value3 = x[n - 3];
-        num value4 = 2 * x[n - 4];
+        num value1, value2, value3, value4 = 0;
+        value1 = 2 * x[n];
+        value2 = x[n - 1];
+        value3 = x[n - 3];
+        value4 = 2 * x[n - 4];
         if (a < 60) {
           y[n] = (value1 + value2 - value3 - value4) / 4;
           // print('---------y[n]----- from deriv');
@@ -116,7 +119,8 @@ class FilterSignalsDataState extends State<FilterSignalsData> {
     List<dynamic> y = x;
     x.asMap().forEach((n, value) {
       //y.iloc[n,1] = x.iloc[n,1]**2
-      var value1 = x[n];
+      var value1;
+      value1 = x[n];
       y[n] = value1 * 2 * 2;
       // print('---------y[n]-----');
       // print(y[n].toString());
@@ -127,7 +131,8 @@ class FilterSignalsDataState extends State<FilterSignalsData> {
   //integral of the signal for a moving window of ws size.
   List<dynamic> win_sum(List<dynamic> x, dynamic ws) {
     List<dynamic> y = x;
-    int l = (ws / 2).toInt();
+    int l = 0;
+    l = (ws / 2).toInt();
     x.asMap().forEach((n, value) {
       num tmp_sum = 0;
       if (n > 300 - l) {
@@ -160,36 +165,22 @@ class FilterSignalsDataState extends State<FilterSignalsData> {
 
   List appe = [];
 
-  List findPeaks(List a, {double? threshold}) {
+  List findPeaks(List a) {
     for (int i = 0; i < a.length; i++) {
       appe.add(a[i]);
     }
     var N = appe.length - 2;
-    var ix = [];
     var ax = [];
 
-    if (threshold != null) {
-      for (var i = 1; i <= N; i++) {
-        if (appe[i - 1] <= appe[i] &&
-            appe[i] >= appe[i + 1] &&
-            appe[i] >= threshold) {
-          ix.add(i.toDouble());
-          if (appe[i] == 0) {
-          } else
-            ax.add(appe[i]);
-        }
-      }
-    } else {
-      for (var i = 1; i <= N; i++) {
-        if (appe[i - 1] <= appe[i] && appe[i] >= appe[i + 1]) {
-          ix.add(i.toDouble());
-          if (appe[i] == 0) {
-          } else {
-            ax.add(appe[i]);
-          }
+    for (var i = 1; i <= N; i++) {
+      if (appe[i - 1] <= appe[i] && appe[i] >= appe[i + 1]) {
+        if (appe[i] == 0) {
+        } else {
+          ax.add(appe[i]);
         }
       }
     }
+
     return ax;
   }
 
@@ -203,8 +194,8 @@ class FilterSignalsDataState extends State<FilterSignalsData> {
     while (index < ((peaklists.length) - 1)) {
       RR_interval = (peaklists[index + 1] - peaklists[index]);
       if (RR_interval > 0) {
-        ms_dist = ((RR_interval / fs) * 1000.0);
-        RR_list.add(ms_dist / 1000);
+        ms_dist = ((RR_interval / fs) * 1000);
+        RR_list.add((60000 / ms_dist));
       }
 
       index += 1;
@@ -225,7 +216,26 @@ class FilterSignalsDataState extends State<FilterSignalsData> {
     // print('----------------first-----------------');
     ff = last(f6);
     // print('---------y[n]-----');
-    
+
+    print(f6.toString());
+    // var f5 = win_sum(f4, window_size);
+    // var heart = ff[0][1];
+  }
+
+  void run2(List bag) {
+    var f1 = lpf(bag);
+    var f2 = hpf(f1);
+    var f3 = deriv(f2);
+    var f4 = squaring(f3);
+    var window_size = 22;
+    var f5 = win_sum(f4, window_size);
+    var f6 = findPeaks(f5);
+    // print('----------------first-----------------');
+    print(f6);
+    // print('----------------first-----------------');
+    ff = last(f6);
+    // print('---------y[n]-----');
+
     print(ff.toString());
     // var f5 = win_sum(f4, window_size);
     // var heart = ff[0][1];

@@ -1,4 +1,5 @@
 import 'package:adobe_xd/pinned.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -57,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: <Widget>[
             Pinned.fromPins(
               Pin(size: 90.0, start: 30.0),
-              Pin(size: 21.0, start: 92.0),
+              Pin(size: 21.0, start: 50.0),
               child: Stack(
                 children: <Widget>[
                   Pinned.fromPins(
@@ -119,7 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             Pinned.fromPins(
               Pin(size: 24.7, end: 30.0),
-              Pin(size: 24.7, start: 92.0),
+              Pin(size: 24.7, start: 50.0),
               child: InkWell(
                 onTap: () {
                   Navigator.push(
@@ -147,7 +148,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             Pinned.fromPins(
               Pin(size: 120.0, start: 30.0),
-              Pin(size: 16.0, start: 118.0),
+              Pin(size: 16.0, start: 75.0),
               child: Text(
                 date.toString(),
                 style: const TextStyle(
@@ -163,7 +164,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             Pinned.fromPins(
               Pin(start: 30.0, end: 30.0),
-              Pin(size: 120.0, middle: 0.263),
+              Pin(size: 120.0, middle: 0.2),
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
@@ -194,9 +195,12 @@ class _HomeScreenState extends State<HomeScreen> {
                               style: TextStyle(
                                 fontFamily: 'Lato',
                                 fontSize: 36,
-                                color: int.parse(AppCubit.get(context)
-                                            .cc(dataNum, signalStreamValue)) >
-                                        80
+                                color: int.parse(AppCubit.get(context).cc(
+                                                dataNum, signalStreamValue)) >=
+                                            60 &&
+                                        int.parse(AppCubit.get(context).cc(
+                                                dataNum, signalStreamValue)) <=
+                                            100
                                     ? chartCardsColor
                                     : chartCardsColor2,
                                 fontWeight: FontWeight.w900,
@@ -269,8 +273,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       Pin(size: 16.0, middle: 0.7692),
                       child: Text(
                         int.parse(AppCubit.get(context)
-                                    .cc(dataNum, signalStreamValue)) >
-                                80
+                                        .cc(dataNum, signalStreamValue)) >
+                                    60 &&
+                                int.parse(AppCubit.get(context)
+                                        .cc(dataNum, signalStreamValue)) <
+                                    100
                             ? 'Normal'
                             : 'Abnormal',
                         style: const TextStyle(
@@ -304,7 +311,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             const Align(
-              alignment: Alignment(0.0, -0.170),
+              alignment: Alignment(0.0, -0.180),
               child: SizedBox(
                 width: 110.0,
                 height: 18.0,
@@ -324,131 +331,176 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             Align(
-              alignment: const Alignment(0.0, 0.7),
+              alignment: const Alignment(0.0, 0.55),
               child: Container(
                 width: 400,
-                height: 380,
+                height: 370,
                 child: chartPage,
               ),
             ),
             Align(
               alignment: const Alignment(0.0, 0.972),
-              child: SizedBox(
-                width: 196.0,
-                height: 49.0,
-                child: Stack(
-                  children: <Widget>[
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
                     SizedBox(
-                      width: 315,
-                      // width: double.infinity,
-                      height: 50.0,
+                      width: 196.0,
+                      height: 49.0,
                       child: Stack(
                         children: <Widget>[
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(25),
-                              //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
-                              color: colorButton,
-                            ),
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: TextButton(
-                                  child: Text(
-                                    titleButton,
-                                    style: const TextStyle(
-                                      fontSize: 17.0,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                    ),
+                          SizedBox(
+                            width: 315,
+                            // width: double.infinity,
+                            height: 50.0,
+                            child: Stack(
+                              children: <Widget>[
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(25),
+                                    //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
+                                    color: colorButton,
                                   ),
-                                  onPressed: () {
-                                    if (titleButton == "Start Monitoring") {
-                                      FlutterBluetoothSerial.instance.state
-                                          .then((state) {
-                                        setState(() {
-                                          if (state.isEnabled == true) {
-                                            //if bluetooth opened go to celect device
-                                            future() async {
-                                              final BluetoothDevice?
-                                                  selectedDevice =
-                                                  await Navigator.of(context)
-                                                      .push(
-                                                MaterialPageRoute(
-                                                  builder: (context) {
-                                                    return const SelectBondedDevicePage(
-                                                        checkAvailability:
-                                                            false);
-                                                  },
-                                                ),
-                                              );
+                                  child: Align(
+                                    alignment: Alignment.center,
+                                    child: TextButton(
+                                        child: Text(
+                                          titleButton,
+                                          style: const TextStyle(
+                                            fontSize: 17.0,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          if (titleButton ==
+                                              "Start Monitoring") {
+                                            FlutterBluetoothSerial
+                                                .instance.state
+                                                .then((state) {
+                                              setState(() {
+                                                if (state.isEnabled == true) {
+                                                  //if bluetooth opened go to celect device
+                                                  future() async {
+                                                    final BluetoothDevice?
+                                                        selectedDevice =
+                                                        await Navigator.of(
+                                                                context)
+                                                            .push(
+                                                      MaterialPageRoute(
+                                                        builder: (context) {
+                                                          return const SelectBondedDevicePage(
+                                                              checkAvailability:
+                                                                  false);
+                                                        },
+                                                      ),
+                                                    );
 
-                                              if (selectedDevice != null) {
-                                                print('Connect -> selected ' +
-                                                    selectedDevice.address);
-                                                _startChat(
-                                                    context, selectedDevice);
-                                              } else {
-                                                print(
-                                                    'Connect -> no device selected');
-                                              }
-                                            }
+                                                    if (selectedDevice !=
+                                                        null) {
+                                                      print(
+                                                          'Connect -> selected ' +
+                                                              selectedDevice
+                                                                  .address);
+                                                      _startChat(context,
+                                                          selectedDevice);
+                                                    } else {
+                                                      print(
+                                                          'Connect -> no device selected');
+                                                    }
+                                                  }
 
-                                            future().then((_) {
-                                              //Navigator.of(context).pop();
-                                              setState(() {});
+                                                  future().then((_) {
+                                                    //Navigator.of(context).pop();
+                                                    setState(() {});
+                                                  });
+                                                  if (kDebugMode) {
+                                                    print(state.isEnabled);
+                                                    print(
+                                                        'open selected bluetooth device page');
+                                                  }
+                                                } else {
+                                                  //open dialog if bluetooth not opened
+                                                  showDialog(
+                                                      context: context,
+                                                      builder: (context) =>
+                                                          ChechkBluetoothDialog());
+
+                                                  // Navigator.of(context).push(
+                                                  //   MaterialPageRoute(
+                                                  //       builder: (BuildContext context) {
+                                                  //     return const ChechkBluetoothDialog();
+                                                  //   }),
+                                                  // );
+                                                  print(
+                                                      'open dialog if bluetooth not opened');
+                                                }
+                                              });
                                             });
-                                            if (kDebugMode) {
-                                              print(state.isEnabled);
-                                              print(
-                                                  'open selected bluetooth device page');
-                                            }
                                           } else {
-                                            //open dialog if bluetooth not opened
-                                            showDialog(
-                                                context: context,
-                                                builder: (context) =>
-                                                    ChechkBluetoothDialog());
+                                            // AppCubit.get(context)
+                                            //     .deleteFromDataBase(id: 11);
+                                            AppCubit.get(context)
+                                                .insertToDatabase(
+                                                    signal: int.parse(
+                                                        signalStreamValue),
+                                                    time: chartData[
+                                                            chartData.length -
+                                                                1]
+                                                        .time
+                                                        .toString());
+                                            //play sound if state is abnormal
+                                            if (int.parse(signalStreamValue) <
+                                                    60 ||
+                                                int.parse(signalStreamValue) >
+                                                    100) {
+                                              final player = AudioCache();
+                                              player.play('audio/tiit.mp3');
+                                            }
+                                            // print(chartData[chartData.length - 1]
+                                            //     .signal
+                                            //     .runtimeType);
+                                            // print(signalData);
+                                            // print(timeData);
 
-                                            // Navigator.of(context).push(
-                                            //   MaterialPageRoute(
-                                            //       builder: (BuildContext context) {
-                                            //     return const ChechkBluetoothDialog();
-                                            //   }),
-                                            // );
-                                            print(
-                                                'open dialog if bluetooth not opened');
+                                            Navigator.pushAndRemoveUntil(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) {
+                                                cubit.currentIndex = 0;
+                                                return MainScreen(
+                                                    title: 'Home');
+                                              }),
+                                              (Route<dynamic> route) => false,
+                                            );
                                           }
-                                        });
-                                      });
-                                    } else {
-                                      // AppCubit.get(context)
-                                      //     .deleteFromDataBase(id: 11);
-                                      AppCubit.get(context).insertToDatabase(
-                                          signal: int.parse(signalStreamValue),
-                                          time: chartData[chartData.length - 1]
-                                              .time
-                                              .toString());
-                                      // print(chartData[chartData.length - 1]
-                                      //     .signal
-                                      //     .runtimeType);
-                                      // print(signalData);
-                                      // print(timeData);
-
-                                      Navigator.pushAndRemoveUntil(
-                                        context,
-                                        MaterialPageRoute(builder: (context) {
-                                          cubit.currentIndex = 0;
-                                          return MainScreen(title: 'Home');
                                         }),
-                                        (Route<dynamic> route) => false,
-                                      );
-                                    }
-                                  }),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
                       ),
                     ),
+                    // SizedBox(
+                    //   width: 10,
+                    // ),
+                    // if (titleButton != "Start Monitoring")
+                    //   Expanded(
+                    //     child: MaterialButton(
+                    //       height: 50,
+                    //       color: Colors.red,
+                    //       shape: RoundedRectangleBorder(
+                    //           borderRadius: BorderRadius.circular(20)),
+                    //       onPressed: () {},
+                    //       child: const Text(
+                    //         'cancel',
+                    //         style: TextStyle(color: Colors.white, fontSize: 18),
+                    //       ),
+                    //     ),
+                    //   )
                   ],
                 ),
               ),

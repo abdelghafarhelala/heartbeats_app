@@ -86,7 +86,7 @@ class _BodyState extends State<Body> {
           child: Column(
             children: <Widget>[
               Expanded(
-                flex: 4,
+                flex: 5,
                 child: PageView.builder(
                   controller: boardController,
                   onPageChanged: (int value) {
@@ -110,6 +110,9 @@ class _BodyState extends State<Body> {
                   ),
                 ),
               ),
+              const SizedBox(
+                height: 50,
+              ),
               Expanded(
                 flex: 2,
                 child: Padding(
@@ -117,7 +120,6 @@ class _BodyState extends State<Body> {
                       horizontal: getProportionateScreenWidth(20)),
                   child: Column(
                     children: <Widget>[
-                      Spacer(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: List.generate(splashData.length, (index) {
@@ -127,7 +129,9 @@ class _BodyState extends State<Body> {
                             return buildDot2(index: index);
                         }),
                       ),
-                      Spacer(flex: 3),
+                      const SizedBox(
+                        height: 50,
+                      ),
                       SizedBox(
                         width: 315,
                         // width: double.infinity,
@@ -161,6 +165,7 @@ class _BodyState extends State<Body> {
                                             Navigator.of(context).push(
                                               MaterialPageRoute(builder:
                                                   (BuildContext context) {
+                                                isLast = false;
                                                 return MainScreen(
                                                   title: 'chart',
                                                 );
@@ -208,6 +213,7 @@ class _BodyState extends State<Body> {
                                             Navigator.of(context).push(
                                               MaterialPageRoute(builder:
                                                   (BuildContext context) {
+                                                isLast = false;
                                                 return MainScreen(
                                                   title: 'chart',
                                                 );
@@ -239,7 +245,6 @@ class _BodyState extends State<Body> {
                           ],
                         ),
                       ),
-                      Spacer(),
                     ],
                   ),
                 ),

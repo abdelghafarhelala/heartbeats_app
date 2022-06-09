@@ -33,7 +33,7 @@ class SyncfusionChart extends StatefulWidget {
 class _SyncfusionChartState extends State<SyncfusionChart> {
   BluetoothConnection? connection;
   //String _messageBuffer = '';
-  final FilterSignalsData ft = new FilterSignalsData();
+  // final FilterSignalsData ft = new FilterSignalsData();
 
   late ChartSeriesController _chartSeriesController;
   bool isConnecting = true;
@@ -103,10 +103,13 @@ class _SyncfusionChartState extends State<SyncfusionChart> {
                         _chartSeriesController = controller;
                       },
                       dataSource: chartData,
-                      color:
-                          int.parse(AppCubit.get(context).cc(dataNum, '')) > 80
-                              ? chartgradientStartColor
-                              : secondColor,
+                      color: int.parse(AppCubit.get(context).cc(dataNum, '')) >=
+                                  60 &&
+                              int.parse(
+                                      AppCubit.get(context).cc(dataNum, '')) <=
+                                  100
+                          ? chartgradientStartColor
+                          : secondColor,
                       xValueMapper: (LiveData sales, _) => sales.time,
                       yValueMapper: (LiveData sales, _) => sales.signal,
                     )
@@ -132,7 +135,7 @@ class _SyncfusionChartState extends State<SyncfusionChart> {
   }
 
   double time = 0;
-  void updateDataSource(List data) {
+  void updateDataSource(Uint8List data) {
     // Allocate buffer for parsed data
     int backspacesCounter = 0;
     data.forEach((byte) {
@@ -157,13 +160,14 @@ class _SyncfusionChartState extends State<SyncfusionChart> {
       }
     }
     // Create liveData if there is new line character
-    for (int i = 0; i < buffer.length; i++) {
-      bag.add(buffer[i]);
-    }
+    // for (int i = 0; i < buffer.length; i++) {
+    //   bag.add(buffer[i]);
+    // }
     //-------------------------------------------------------------------------------------------------
     //-------------------------------------------------------------------------------------------------
-    FilterSignalsDataState().run(bag);
-    String dataString = String.fromCharCodes(ff!.cast<int>());
+    // FilterSignalsDataState().run(bag);
+    // String dataString = String.fromCharCodes(ff!.cast<int>());
+    String dataString = String.fromCharCodes(buffer);
     dataNum = num.parse(dataString);
 
     if (kDebugMode) {
@@ -176,12 +180,10 @@ class _SyncfusionChartState extends State<SyncfusionChart> {
 
     int index = buffer.indexOf(13);
     if (~index != 0) {
-      time = time + 0.005;
-
-      chartData.add(LiveData(time, dataNum));
+      chartData.add(LiveData(time++, dataNum));
       setState(() {
         chartData.add(
-          LiveData(time, dataNum),
+          LiveData(time++, dataNum),
         );
         chartData.removeAt(0);
         _chartSeriesController.updateDataSource(

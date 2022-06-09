@@ -198,13 +198,15 @@ class _FilterSignalsData2State extends State<FilterSignalsData2> {
   var RR_list = [];
   var RR_interval;
   var ms_dist;
+  var mss_dist;
 
   List last(List peaklists) {
     while (index < ((peaklists.length) - 1)) {
       RR_interval = (peaklists[index + 1] - peaklists[index]);
       if (RR_interval > 0) {
         ms_dist = ((RR_interval / fs) * 1000.0);
-        RR_list.add(ms_dist);
+        mss_dist = 60000 / ms_dist;
+        RR_list.add(mss_dist);
       }
 
       index += 1;
