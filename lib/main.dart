@@ -19,10 +19,20 @@ void main() async {
   await CacheHelper.init();
   bool? onBoarding = CacheHelper.sharedPreferences.getBool('onBoarding');
   Widget? widget;
+  Widget examp = SplashScreenView(
+    navigateRoute: OnBoardingScreen(),
+    duration: 4000,
+    imageSize: 130,
+    imageSrc: "assets/images/splash.png",
+    text: "Heart Beats",
+    textType: TextType.NormalText,
+    textStyle: TextStyle(fontSize: 30.0, color: Colors.white),
+    backgroundColor: Color.fromRGBO(39, 149, 255, 1),
+  );
   if (onBoarding == true) {
     widget = SplashScreen();
   } else {
-    widget = OnBoardingScreen();
+    widget = examp;
   }
 
   runApp(
@@ -38,16 +48,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    Widget examp = SplashScreenView(
-      navigateRoute: startWidget,
-      duration: 4000,
-      imageSize: 130,
-      imageSrc: "assets/images/splash.png",
-      text: "Heart Beats",
-      textType: TextType.NormalText,
-      textStyle: TextStyle(fontSize: 30.0, color: Colors.white),
-      backgroundColor: Color.fromRGBO(39, 149, 255, 1),
-    );
+    // Widget examp = SplashScreenView(
+    //   navigateRoute: startWidget,
+    //   duration: 4000,
+    //   imageSize: 130,
+    //   imageSrc: "assets/images/splash.png",
+    //   text: "Heart Beats",
+    //   textType: TextType.NormalText,
+    //   textStyle: TextStyle(fontSize: 30.0, color: Colors.white),
+    //   backgroundColor: Color.fromRGBO(39, 149, 255, 1),
+    // );
     return BlocProvider(
       create: (context) => AppCubit()..createDatabase(),
       child: MaterialApp(
@@ -56,7 +66,7 @@ class MyApp extends StatelessWidget {
         theme: myThemeData,
 
         // home: MainScreen(title: 'title'),
-        home: examp,
+        home: startWidget,
       ),
     );
   }

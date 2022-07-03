@@ -1,8 +1,10 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heartbeats_app/shared/cubit/cubit.dart';
 import 'package:heartbeats_app/shared/cubit/states.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../constants.dart';
 
@@ -73,7 +75,7 @@ class _HistoryRecordsState extends State<HistoryRecords> {
 
 Widget buildHistoryItem(
   Map history,
-  context,
+  BuildContext context,
 ) =>
     Material(
       child: InkWell(
@@ -154,7 +156,12 @@ Widget buildHistoryItem(
                       ),
                       const SizedBox(
                         width: 8.0,
-                      )
+                      ),
+                      IconButton(
+                          onPressed: () {
+                            share(context, history['signal']);
+                          },
+                          icon: const Icon(Icons.share))
                     ],
                   ),
                 ],
@@ -215,5 +222,14 @@ Widget buildDialog(int id, fun) {
         ],
       ),
     ),
+  );
+}
+
+void share(BuildContext context, int num) {
+  String massege = 'My heart rate is : $num';
+  RenderSliver? box = context.findRenderObject() as RenderSliver;
+  Share.share(
+    massege,
+    subject: 'Description',
   );
 }

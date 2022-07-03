@@ -37,14 +37,14 @@ class FilterSignalsDataState extends State<FilterSignalsData> {
 
   //#low-pass filter
   //#function
-  List<dynamic> lpf(List<dynamic> x) {
-    List<dynamic> y = x;
+  List<int> lpf(List<int> x) {
+    List<int> y = x;
     int a = 1;
     x.asMap().forEach((n, value) {
       if (n < 13) {
         //continue;
       } else {
-        num value1, value2, value3, value4, value5 = 0;
+        int value1, value2, value3, value4, value5 = 0;
         value1 = 2 * y[n - 1]; //2 *
         value2 = y[n - 2];
         value3 = x[n];
@@ -63,22 +63,22 @@ class FilterSignalsDataState extends State<FilterSignalsData> {
 
 // high-pass filter
 // function
-  List<dynamic> hpf(List<dynamic> x) {
-    List<dynamic> y = x;
+  List<int> hpf(List<int> x) {
+    List<int> y = x;
     int a = 1;
     x.asMap().forEach((n, value) {
       if (n < 33) {
         //continue;
       } else {
         //y.iloc[n,1] = y.iloc[n-1,1] - x.iloc[n,1]/32 + x.iloc[n-16,1] - x.iloc[n-17,1] + x.iloc[n-32,1]/32
-        num value1, value2, value3, value4, value5 = 0;
+        int value1, value2, value3, value4, value5 = 0;
         value1 = y[n - 1];
-        value2 = x[n] / 32;
+        value2 = (x[n] / 32).toInt();
         value3 = x[n - 16];
         value4 = x[n - 17];
         value5 = x[n - 32];
         if (a < 60) {
-          y[n] = value1 - value2 + value3 - value4 + value5 / 32;
+          y[n] = (value1 - value2 + value3 - value4 + value5 / 32).toInt();
           // print('---------y[n]-----');
           // print(y[n].toString());
         }
@@ -90,21 +90,21 @@ class FilterSignalsDataState extends State<FilterSignalsData> {
 
   //defivative of signal
   //function
-  List<dynamic> deriv(List<dynamic> x) {
-    List<dynamic> y = x;
+  List<int> deriv(List<int> x) {
+    List<int> y = x;
     int a = 1;
     x.asMap().forEach((n, value) {
       if (n < 5) {
         //continue;
       } else {
         //y.iloc[n, 1] = (2*x.iloc[n,1] + x.iloc[n-1,1] - x.iloc[n-3,1] - 2*x.iloc[n-4,1])/4
-        num value1, value2, value3, value4 = 0;
+        int value1, value2, value3, value4 = 0;
         value1 = 2 * x[n];
         value2 = x[n - 1];
         value3 = x[n - 3];
-        value4 = 2 * x[n - 4];
+        value4 = int.parse((2 * x[n - 4]).toString());
         if (a < 60) {
-          y[n] = (value1 + value2 - value3 - value4) / 4;
+          y[n] = ((value1 + value2 - value3 - value4) / 4).toInt();
           // print('---------y[n]----- from deriv');
           // print(y[n].toString());
         }
@@ -115,8 +115,8 @@ class FilterSignalsDataState extends State<FilterSignalsData> {
   }
 
   //squarring the signal
-  List<dynamic> squaring(List<dynamic> x) {
-    List<dynamic> y = x;
+  List<int> squaring(List<int> x) {
+    List<int> y = x;
     x.asMap().forEach((n, value) {
       //y.iloc[n,1] = x.iloc[n,1]**2
       var value1;
@@ -129,12 +129,12 @@ class FilterSignalsDataState extends State<FilterSignalsData> {
   }
 
   //integral of the signal for a moving window of ws size.
-  List<dynamic> win_sum(List<dynamic> x, dynamic ws) {
-    List<dynamic> y = x;
+  List<int> win_sum(List<int> x, dynamic ws) {
+    List<int> y = x;
     int l = 0;
     l = (ws / 2).toInt();
     x.asMap().forEach((n, value) {
-      num tmp_sum = 0;
+      int tmp_sum = 0;
       if (n > 300 - l) {
         //break;
       } else if (n < l) {
@@ -147,7 +147,7 @@ class FilterSignalsDataState extends State<FilterSignalsData> {
           j++;
         }
         // y.iloc[n,1] = tmp_sum/(l+1)
-        y[n] = tmp_sum / (l + 1);
+        y[n] = tmp_sum ~/ (l + 1);
       }
 
       //y.iloc[n,1] = x.iloc[n,1]**2
@@ -163,14 +163,14 @@ class FilterSignalsDataState extends State<FilterSignalsData> {
     List<dynamic> y = x;
   }
 
-  List appe = [];
+  List<int> appe = [];
 
-  List findPeaks(List a) {
+  List<int> findPeaks(List a) {
     for (int i = 0; i < a.length; i++) {
       appe.add(a[i]);
     }
     var N = appe.length - 2;
-    var ax = [];
+    List<int> ax = [];
 
     for (var i = 1; i <= N; i++) {
       if (appe[i - 1] <= appe[i] && appe[i] >= appe[i + 1]) {
@@ -186,16 +186,16 @@ class FilterSignalsDataState extends State<FilterSignalsData> {
 
   int index = 0;
   var fs = 200;
-  var RR_list = [];
+  List<int> RR_list = [];
   var RR_interval;
   var ms_dist;
 
-  List last(List peaklists) {
+  List<int> last(List peaklists) {
     while (index < ((peaklists.length) - 1)) {
       RR_interval = (peaklists[index + 1] - peaklists[index]);
       if (RR_interval > 0) {
         ms_dist = ((RR_interval / fs) * 1000);
-        RR_list.add((60000 / ms_dist));
+        RR_list.add(60000 ~/ ms_dist);
       }
 
       index += 1;
@@ -203,7 +203,7 @@ class FilterSignalsDataState extends State<FilterSignalsData> {
     return RR_list;
   }
 
-  void run(List bag) {
+  int run(List<int> bag) {
     var f1 = lpf(bag);
     var f2 = hpf(f1);
     var f3 = deriv(f2);
@@ -217,29 +217,36 @@ class FilterSignalsDataState extends State<FilterSignalsData> {
     ff = last(f6);
     // print('---------y[n]-----');
 
-    print(f6.toString());
+    // print(ff!.last.toString());
     // var f5 = win_sum(f4, window_size);
     // var heart = ff[0][1];
+    // if(num.parse(ff?.last )==true)
+    // print('ff is $ff');
+    if (ff!.length > 0 && ff!.first > 35 && ff!.first <= 110)
+      return int.parse(ff!.first.toString());
+    else
+      return 0;
   }
 
-  void run2(List bag) {
-    var f1 = lpf(bag);
-    var f2 = hpf(f1);
-    var f3 = deriv(f2);
-    var f4 = squaring(f3);
-    var window_size = 22;
-    var f5 = win_sum(f4, window_size);
-    var f6 = findPeaks(f5);
-    // print('----------------first-----------------');
-    print(f6);
-    // print('----------------first-----------------');
-    ff = last(f6);
-    // print('---------y[n]-----');
+  // num run2(List bag) {
+  //   var f1 = lpf(bag);
+  //   var f2 = hpf(f1);
+  //   var f3 = deriv(f2);
+  //   var f4 = squaring(f3);
+  //   var window_size = 22;
+  //   var f5 = win_sum(f4, window_size);
+  //   var f6 = findPeaks(f5);
+  //   // print('----------------first-----------------');
+  //   print(f6);
+  //   // print('----------------first-----------------');
+  //   ff = last(f6);
+  //   // print('---------y[n]-----');
 
-    print(ff.toString());
-    // var f5 = win_sum(f4, window_size);
-    // var heart = ff[0][1];
-  }
+  //   print(ff.toString());
+  //   // var f5 = win_sum(f4, window_size);
+  //   // var heart = ff[0][1];
+  //   return num.parse(ff!.last);
+  // }
 
   @override
   Widget build(BuildContext context) {

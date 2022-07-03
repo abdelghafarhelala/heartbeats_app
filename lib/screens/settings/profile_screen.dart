@@ -134,13 +134,13 @@ class _ProfileState extends State<Profile> {
                 ),
               ),
             ),
-            MaterialButton(
-              onPressed: () {
-                FilterSignalsDataState().run2(bagg);
-              },
-              child: Text('test'),
-              color: Colors.green,
-            )
+            // MaterialButton(
+            //   onPressed: () {
+            //     // FilterSignalsDataState().run2(bagg);
+            //   },
+            //   child: Text('test'),
+            //   color: Colors.green,
+            // )
           ],
         ),
       ),

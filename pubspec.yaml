@@ -57,6 +57,7 @@ dependencies:
   audioplayers: ^0.20.1
   splash_screen_view: 
   device_preview: ^1.1.0
+  share_plus: ^4.0.10
   # flutter_native_splash: 
   
 

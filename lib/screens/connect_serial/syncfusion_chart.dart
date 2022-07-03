@@ -4,12 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:heartbeats_app/constants.dart';
+import 'package:heartbeats_app/screens/python_fliter/filter_signals_data_screen.dart';
 import 'package:heartbeats_app/shared/cubit/cubit.dart';
 import 'package:heartbeats_app/shared/cubit/states.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-num dataNum = 0;
-List bag = [];
+int dataNum = 0;
+List<int> bag = [];
 late List<LiveData> chartData;
 
 class SyncfusionChart extends StatefulWidget {
@@ -154,26 +155,15 @@ class _SyncfusionChartState extends State<SyncfusionChart> {
       }
     }
     // Create liveData if there is new line character
-    // for (int i = 0; i < buffer.length; i++) {
-    //   bag.add(buffer[i]);
-    // }
-    //-------------------------------------------------------------------------------------------------
-    //-------------------------------------------------------------------------------------------------
-    // FilterSignalsDataState().run(bag);
-    // String dataString = String.fromCharCodes(ff!.cast<int>());
-    String dataString = String.fromCharCodes(buffer);
-    dataNum = num.parse(dataString);
 
-    if (kDebugMode) {
-      print('==========>');
-      print(buffer);
-      print('........>');
-      print(dataNum);
-      print('==========<');
-    }
+    //String dataString = String.fromCharCodes(buffer);
+    //print('buffer is -----$buffer and data string is $dataString');
 
-    int index = buffer.indexOf(13);
-    if (~index != 0) {
+    // dataNum = int.parse(dataString);
+    int filter = 0;
+    filter = FilterSignalsDataState().run(buffer);
+    if (filter != 0) {
+      dataNum = filter;
       chartData.add(LiveData(time++, dataNum));
       setState(() {
         chartData.add(
@@ -183,6 +173,19 @@ class _SyncfusionChartState extends State<SyncfusionChart> {
         _chartSeriesController.updateDataSource(
             addedDataIndex: chartData.length - 1, removedDataIndex: 0);
       });
+    }
+    print('Data num is $dataNum');
+
+    if (kDebugMode) {
+      // print('==========>');
+      // print(buffer);
+      // print('........>');
+      // print(dataNum);
+      // print('==========<');
+    }
+
+    int index = buffer.indexOf(13);
+    if (~index != 0) {
     } else {}
   }
 
@@ -196,5 +199,5 @@ class _SyncfusionChartState extends State<SyncfusionChart> {
 class LiveData {
   LiveData(this.time, this.signal);
   final double time;
-  final num signal;
+  final int signal;
 }
