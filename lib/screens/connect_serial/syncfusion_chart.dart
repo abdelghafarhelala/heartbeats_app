@@ -1,21 +1,14 @@
-import 'dart:async';
 import 'dart:typed_data';
-import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:heartbeats_app/constants.dart';
-import 'package:heartbeats_app/screens/home/home_screen.dart';
-import 'package:heartbeats_app/screens/python_fliter/filter_signals_data_screen.dart';
 import 'package:heartbeats_app/shared/cubit/cubit.dart';
 import 'package:heartbeats_app/shared/cubit/states.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
 num dataNum = 0;
-
 List bag = [];
 late List<LiveData> chartData;
 
@@ -114,6 +107,7 @@ class _SyncfusionChartState extends State<SyncfusionChart> {
                       yValueMapper: (LiveData sales, _) => sales.signal,
                     )
                   ],
+                  ///////////////////////////////////////////////////////////////////////
                   // primaryXAxis: NumericAxis(
                   //   majorGridLines: const MajorGridLines(width: 0),
                   //   edgeLabelPlacement: EdgeLabelPlacement.shift,
@@ -134,7 +128,7 @@ class _SyncfusionChartState extends State<SyncfusionChart> {
     );
   }
 
-  double time = 0;
+  double time = 0.0;
   void updateDataSource(Uint8List data) {
     // Allocate buffer for parsed data
     int backspacesCounter = 0;

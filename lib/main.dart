@@ -1,8 +1,12 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:heartbeats_app/screens/home/home.dart';
+import 'package:heartbeats_app/screens/main_screen.dart';
 import 'package:heartbeats_app/screens/on_boarding/on_boarding_screen.dart';
 import 'package:heartbeats_app/shared/cubit/cubit.dart';
 import 'package:heartbeats_app/shared/shared_preferences/cache_Helper.dart';
+import 'package:path/path.dart';
 import './routs.dart';
 import './screens/splash/splash_screen.dart';
 import './utilitys/theme.dart';
@@ -21,9 +25,11 @@ void main() async {
     widget = OnBoardingScreen();
   }
 
-  runApp(MyApp(
-    startWidget: widget,
-  ));
+  runApp(
+    MyApp(
+      startWidget: widget,
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -48,11 +54,9 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: myThemeData,
-        // A widget which will be started on application startup
-        // home: SplashScreen(),
+
+        // home: MainScreen(title: 'title'),
         home: examp,
-        // initialRoute: SplashScreen.routeName,
-        // routes: routes,
       ),
     );
   }

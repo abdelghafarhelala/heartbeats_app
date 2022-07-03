@@ -43,6 +43,10 @@ class _MainScreenState extends State<MainScreen> {
       builder: (BuildContext context, AppStates state) {
         AppCubit cubit = AppCubit.get(context);
         return Scaffold(
+          // appBar: AppBar(
+          //   elevation: 0,
+          //   backgroundColor: Colors.white,
+          // ),
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: cubit.currentIndex,
             onTap: (index) {
@@ -57,7 +61,6 @@ class _MainScreenState extends State<MainScreen> {
               BottomNavigationBarItem(
                 icon: ImageIcon(
                   AssetImage('assets/images/home.png'),
-                  size: 35,
                 ),
                 label: cubit.titles[0],
               ),

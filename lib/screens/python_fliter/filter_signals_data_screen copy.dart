@@ -162,7 +162,6 @@ class _FilterSignalsData2State extends State<FilterSignalsData2> {
   List findPeaks(List a, {double? threshold}) {
     for (int i = 0; i < a.length; i++) {
       appe.add(a[i][1]);
-      time!.add(a[i][0]);
     }
     var N = appe.length - 2;
     var ix = [];

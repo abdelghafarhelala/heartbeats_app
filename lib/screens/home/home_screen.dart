@@ -292,6 +292,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         softWrap: false,
                       ),
                     ),
+                    ////////////////////////////////////////////////////////////////////////////////////////////////////////
                     Pinned.fromPins(
                       Pin(size: 113.4, start: 165.6),
                       Pin(size: 40.0, middle: 0.3),

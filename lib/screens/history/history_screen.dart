@@ -101,8 +101,9 @@ Widget buildHistoryItem(
               borderRadius: BorderRadius.circular(10),
             ),
 
-            color:
-                (history['signal']) > 80 ? chartCardsColor : chartCardsColor2,
+            color: (history['signal']) >= 60 && history['signal'] <= 100
+                ? chartCardsColor
+                : chartCardsColor2,
 
             // color: chartCardsColor,
 
@@ -115,7 +116,7 @@ Widget buildHistoryItem(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          (history['signal']) > 80
+                          (history['signal']) >= 60 && history['signal'] <= 100
                               ? 'Normal ECG'
                               : 'Abnormal ECG',
                           style: const TextStyle(
@@ -135,7 +136,8 @@ Widget buildHistoryItem(
                       Text(
                         history['signal'].toString(),
                         style: TextStyle(
-                          color: (history['signal']) > 80
+                          color: (history['signal']) >= 60 &&
+                                  history['signal'] <= 100
                               ? Colors.blue
                               : secondColor,
                           // color: Colors.blue,
