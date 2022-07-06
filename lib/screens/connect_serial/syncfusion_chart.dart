@@ -164,10 +164,11 @@ class _SyncfusionChartState extends State<SyncfusionChart> {
     filter = FilterSignalsDataState().run(buffer);
     if (filter != 0) {
       dataNum = filter;
-      chartData.add(LiveData(time++, dataNum));
+      time = time + 0.005;
+      chartData.add(LiveData(time, dataNum));
       setState(() {
         chartData.add(
-          LiveData(time++, dataNum),
+          LiveData(time, dataNum),
         );
         chartData.removeAt(0);
         _chartSeriesController.updateDataSource(

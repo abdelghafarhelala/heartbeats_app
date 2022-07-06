@@ -401,10 +401,14 @@ class _HomedealScreenState extends State<Homedeal> {
                                   .cc(dataNum, signalStreamValue)),
                               time: chartData[chartData.length - 1]
                                   .time
-                                  .toString());
+                                  .toStringAsFixed(3));
                           //play sound if state is abnormal
-                          if (int.parse(signalStreamValue) < 60 ||
-                              int.parse(signalStreamValue) > 100) {
+                          if (int.parse(AppCubit.get(context)
+                                      .cc(dataNum, signalStreamValue)) <
+                                  60 ||
+                              int.parse(AppCubit.get(context)
+                                      .cc(dataNum, signalStreamValue)) >
+                                  100) {
                             final player = AudioCache();
                             player.play('audio/tiit.mp3');
                           }

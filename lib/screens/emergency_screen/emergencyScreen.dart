@@ -92,7 +92,7 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
                         ),
                         TextFormField(
                           decoration: const InputDecoration(
-                            label: Text('Phone Two'),
+                            label: Text('Phone one'),
                             border: OutlineInputBorder(),
                           ),
                           controller: phone1Controller,
@@ -112,7 +112,7 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
                         ),
                         TextFormField(
                             decoration: const InputDecoration(
-                              label: Text('Phone one'),
+                              label: Text('Phone two'),
                               border: OutlineInputBorder(),
                             ),
                             controller: phone2Controller),
