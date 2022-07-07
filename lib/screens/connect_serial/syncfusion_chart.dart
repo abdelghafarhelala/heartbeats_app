@@ -176,6 +176,11 @@ class _SyncfusionChartState extends State<SyncfusionChart> {
       });
     }
     print('Data num is $dataNum');
+    if (chartData.length > 29) {
+      for (int i = 0; i < chartData.length - 10; i++) {
+        chartData.removeAt(i);
+      }
+    }
 
     if (kDebugMode) {
       // print('==========>');
