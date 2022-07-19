@@ -9,6 +9,7 @@ import 'package:flutter/services.dart' show rootBundle;
 
 import 'package:csv/csv.dart';
 import 'package:heartbeats_app/screens/connect_serial/syncfusion_chart.dart';
+import 'package:scidart/scidart.dart';
 
 List? ff;
 List? time = [];
@@ -165,23 +166,35 @@ class FilterSignalsDataState extends State<FilterSignalsData> {
 
   List<int> appe = [];
 
-  List<int> findPeaks(List a) {
-    for (int i = 0; i < a.length; i++) {
-      appe.add(a[i]);
-    }
-    var N = appe.length - 2;
-    List<int> ax = [];
+  // List<int> findPeaks(List a) {
+  //   for (int i = 0; i < a.length; i++) {
+  //     appe.add(a[i]);
+  //   }
+  //   var N = appe.length - 2;
+  //   List<int> ax = [];
 
-    for (var i = 1; i <= N; i++) {
-      if (appe[i - 1] <= appe[i] && appe[i] >= appe[i + 1]) {
-        if (appe[i] == 0) {
-        } else {
-          ax.add(appe[i]);
-        }
-      }
-    }
+  //   for (var i = 1; i <= N; i++) {
+  //     if (appe[i - 1] <= appe[i] && appe[i] >= appe[i + 1]) {
+  //       if (appe[i] == 0) {
+  //       } else {
+  //         ax.add(appe[i]);
+  //       }
+  //     }
+  //   }
 
-    return ax;
+  //   return ax;
+  // }
+  List findPeaksFun(List<int> x) {
+    List<double> fh = [];
+    x.forEach((element) {
+      fh.add(double.parse(element.toString()));
+    });
+    List<double> findPeaksList = findPeaks(fh)[1];
+    List<int> intPeaks = [];
+    findPeaksList.forEach((element) {
+      intPeaks.add(element.round());
+    });
+    return intPeaks;
   }
 
   int index = 0;
@@ -210,7 +223,7 @@ class FilterSignalsDataState extends State<FilterSignalsData> {
     var f4 = squaring(f3);
     var window_size = 22;
     var f5 = win_sum(f4, window_size);
-    var f6 = findPeaks(f5);
+    var f6 = findPeaksFun(f5);
     // print('----------------first-----------------');
     // print(f6);
     // print('----------------first-----------------');

@@ -58,6 +58,7 @@ dependencies:
   splash_screen_view: 
   device_preview: ^1.1.0
   share_plus: ^4.0.10
+  scidart: ^0.0.2-dev.9
   # flutter_native_splash: 
   
 
